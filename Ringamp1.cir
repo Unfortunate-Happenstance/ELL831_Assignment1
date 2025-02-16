@@ -1,0 +1,36 @@
+* /Users/nakshatpandey/Third_Year/2402/ELL831/Assignment1/Ringamp/Ringamp1.cir
+* Define all MOSFET widths as parameters
+.param Wp1=8.66e-07, Wn2=3.30e-07, Wp6=1.05e-06, Wn8=4.00e-07, Wn10=5.50e-07, Wp11=1.65e-06 ; define widths 
+
+* MOSFET definitions
+M1 Vdd N003 N004 Vdd CMOSP l=240n w={Wp1}
+M2 N004 N003 0 0 CMOSN l=240n w={Wn2}
+M3 N004 Rst N003 0 CMOSN l=160n w=320n
+M4 N001 Rst N002 0 CMOSN l=160n w=320n
+M5 N006 N008 N009 Vdd CMOSP l=160n w=320n
+M6 Vdd N002 N005 Vdd CMOSP l=160n w={Wp6}
+M7 Vdd N006 N007 Vdd CMOSP l=160n w={Wp6}
+M8 N005 N002 0 0 CMOSN l=160n w={Wn8}
+M9 N007 N006 0 0 CMOSN l=160n w={Wn8}
+M10 Vout N007 0 0 CMOSN l=320n w={Wn10}
+M11 Vdd N005 Vout Vdd CMOSP l=320n w={Wp11}
+C1 N003 Vin 100f
+V1 Vin 0 SINE(0.8 50m 40khz) AC 50m 180
+C2 N002 N004 100f
+C3 N006 N004 100f
+A1 Rst 0 0 0 0 N008 0 0 BUF
+V2 Vdd 0 1.8
+V3 Rst 0 PWL(0 1.5 1m 1.5 2m 0)
+V4 N009 N001 0.2
+.lib /Users/nakshatpandey/Library/Application Support/LTspice/lib/cmp/standard.mos
+.inc /Applications/LTspice.app/Contents/Resources/lib/sub/tsmc018.lib
+.model CMOSP NMOS (level=3 vto=0.7)
+.model CMOSN NMOS (level=3 vto=0.7)
+
+* Measure average power consumption from V2
+.meas AVG_POWER AVG -I(V2)*V(Vdd)
+* original ckt parameters Wp1=2520n Wn2=960n Wp6=840n Wn8=320n Wn10=320n Wp11=960n
+.tran 1m
+*.ac dec 1000 1hz 1Ghz
+.backanno
+.end
