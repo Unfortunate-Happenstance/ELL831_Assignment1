@@ -7,9 +7,6 @@ import os
 import time
 import threading
 
-##############################
-# User-provided placeholders #
-##############################
 LTSPICE_EXECUTABLE = "/Applications/LTspice.app/Contents/MacOS/LTspice"  # MacOS path
 CIRCUIT_FILE_POWER = "/Users/nakshatpandey/Third_Year/2402/ELL831/Assignment1/ELL831_Assignment1/Ringamp1_power.cir"
 CIRCUIT_FILE_GAIN = "/Users/nakshatpandey/Third_Year/2402/ELL831/Assignment1/ELL831_Assignment1/Ringamp1_gain.cir"
@@ -96,27 +93,7 @@ def update_circuit_file(new_values, type):
         print(f"[ERROR] Failed to update circuit file: {e}")
         raise
 
-# def run_ltspice_simulation(W):
-#     """
-#     Placeholder for your custom function that:
-#     1. Writes transistor widths W into the netlist.
-#     2. Runs LTspice (subprocess or API).
-#     3. Parses the .log/.raw to extract:
-#        - Gain in dB at the target frequency (e.g. 40 kHz).
-#        - Power consumption in micro-watts.
-#     Returns: (gain_dB, power_uW)
-#     """
-#     # -- Your implementation here --
-#     # Update the circuit file with the new transistor widths
-#     update_circuit_file(W, "power")
-#     update_circuit_file(W, "gain")
-#     run_ltspice("power")
-#     power_uW = parse_power_consumption()
-#     run_ltspice("gain")
-#     gain_dB, phase_deg = parse_ac_data()
-#     print(f"[DEBUG] Gain: {gain_dB} dB, Phase: {phase_deg} degrees extracted")
-#     return (gain_dB, power_uW)
-
+#Function to run LTspice simulation for power and gain
 def run_ltspice_simulation(W):
     """
     Run LTspice simulations for power consumption and gain in separate threads.
@@ -203,10 +180,7 @@ def generate_neighbor(current_solution):
     print("[DEBUG] Generated neighbor solution:")
     return tuple(neighbor_solution)
 
-#####################################
-# Cost function with normalization  #
-#####################################
-
+# Cost function with normalization
 def cost_function(W, G_ref=35.0, P_ref=40.0):
     """Calculate the cost function for given transistor widths."""
     print("\n[DEBUG] Evaluating cost function...")
@@ -222,9 +196,6 @@ def cost_function(W, G_ref=35.0, P_ref=40.0):
     return cost
 
 
-########################################
-# Simulated Annealing High-level Logic #
-########################################
 #SA
 def simulated_annealing(initial_solution, T_init=1.0, alpha=0.95, max_iter=100):
     """Perform simulated annealing optimization."""
